@@ -12,15 +12,30 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Posticks"
         tools:targetApi="31">
+
+        <!-- Para ejecutar SOLO NoteDetailActivity -->
         <activity
-            android:name=".MainActivity"
+            android:name=".NoteDetailActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- MainActivity queda sin filtro para que no se ejecute -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <!-- Comentado para evitar conflictos al correr local -->
+            <!--
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            -->
+        </activity>
+
     </application>
 
 </manifest>
