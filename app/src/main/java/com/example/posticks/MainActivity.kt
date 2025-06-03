@@ -1,20 +1,46 @@
 package com.example.posticks
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), NotasAdapter.OnNotaClickListener {
+
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: NotasAdapter
+    private lateinit var btnNuevaNota: Button
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_main)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+
+        recyclerView = findViewById(R.id.recyclerNotas)
+        btnNuevaNota = findViewById(R.id.btnNuevaNota)
+
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        adapter = NotasAdapter(NotasData.obtenerNotas(), this)
+        recyclerView.adapter = adapter
+
+        btnNuevaNota.setOnClickListener {
+            val intent = Intent(this, CrearEditarNotaActivity::class.java)
+            intent.putExtra("isEdit", false)
+            startActivity(intent)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Refrescamos la lista por si se agregó o editó algo
+        adapter.actualizarDatos(NotasData.obtenerNotas())
+    }
+
+    override fun onNotaClick(nota: Nota) {
+        val intent = Intent(this, CrearEditarNotaActivity::class.java)
+        intent.putExtra("isEdit", true)
+        intent.putExtra("notaId", nota.id)
+        startActivity(intent)
     }
 }
