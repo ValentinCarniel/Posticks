@@ -4,31 +4,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
-    android:background="#FFFFFF">
+    android:padding="16dp">
 
     <EditText
-        android:id="@+id/etBuscar"
+        android:id="@+id/etTitulo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Buscar..."
-        android:drawableLeft="@android:drawable/ic_menu_search"
-        android:padding="10dp"
-        android:textColor="#000000"
-        android:textColorHint="#999999" />
+        android:hint="Título"
+        android:textSize="18sp"
+        android:inputType="textCapWords" />
 
-
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerNotas"
+    <EditText
+        android:id="@+id/etContenido"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_marginTop="8dp" />
+        android:hint="Contenido"
+        android:textSize="16sp"
+        android:gravity="top"
+        android:inputType="textMultiLine"
+        android:minLines="6" />
+
     <Button
-        android:id="@+id/btnNuevaNota"
+        android:id="@+id/btnGuardar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Crear Nueva Nota"
-        />
+        android:text="Guardar"
+        android:layout_marginTop="16dp"/>
 </LinearLayout>

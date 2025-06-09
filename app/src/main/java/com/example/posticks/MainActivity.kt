@@ -1,38 +1,44 @@
 package com.example.posticks
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.posticks.adapter.NotaAdapter
-import com.example.posticks.databinding.ActivityMainBinding
-import com.example.posticks.model.Nota
-import java.text.SimpleDateFormat
-import java.util.*
+import androidx.recyclerview.widget.RecyclerView
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), NotasAdapter.OnNotaClickListener {
 
-    private lateinit var binding: ActivityMainBinding
-    private lateinit var notaAdapter: NotaAdapter
-    private val listaNotas = mutableListOf(
-        Nota("Comprar leche", "20:30"),
-        Nota("Estudiar Kotlin", "21:00"),
-        Nota("Visitar ChatGPT", "22:15")
-    )
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: NotasAdapter
+    private lateinit var btnNuevaNota: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        recyclerView = findViewById(R.id.recyclerNotas)
+        btnNuevaNota = findViewById(R.id.btnNuevaNota)
 
-        notaAdapter = NotaAdapter(listaNotas)
-        binding.rvNotas.layoutManager = LinearLayoutManager(this)
-        binding.rvNotas.adapter = notaAdapter
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        adapter = NotasAdapter(NotasData.obtenerNotas().toMutableList(), this)
+        recyclerView.adapter = adapter
 
-        binding.btnAgregar.setOnClickListener {
-            val horaActual = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date())
-            listaNotas.add(Nota("Nueva nota", horaActual))
-            notaAdapter.notifyItemInserted(listaNotas.size - 1)
+        btnNuevaNota.setOnClickListener {
+            val intent = Intent(this, CrearEditarNotaActivity::class.java)
+            intent.putExtra("isEdit", false)
+            startActivity(intent)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        adapter.actualizarDatos(NotasData.obtenerNotas())
+    }
+
+    override fun onNotaClick(nota: Nota) {
+        val intent = Intent(this, NoteDetailActivity::class.java)
+        intent.putExtra("notaId", nota.id)
+        startActivity(intent)
     }
 }

@@ -28,6 +28,11 @@
             android:name=".NoteDetailActivity"
             android:exported="true" />
 
+        <!-- Agrega esta línea para CrearEditarNotaActivity -->
+        <activity
+            android:name=".CrearEditarNotaActivity"
+            android:exported="true" />
+
     </application>
 
 </manifest>
